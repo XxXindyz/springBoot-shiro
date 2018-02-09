@@ -1,0 +1,56 @@
+package com.xxxindy.springBoot.filter;
+
+import org.apache.catalina.filters.RemoteIpFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+/**
+ * @Author: xxxindy
+ * @Date:2018/1/29 下午4:25
+ * @Description:
+ */
+@Configuration
+public class WebConfiguration {
+    @Bean
+    public RemoteIpFilter remoteIpFilter() {
+        return new RemoteIpFilter();
+    }
+
+    @Bean
+    public FilterRegistrationBean testFilterRegistration() {
+
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new MyFilter());
+        registration.addUrlPatterns("/*");
+        registration.addInitParameter("paramName", "paramValue");
+        registration.setName("MyFilter");
+        registration.setOrder(1);
+        return registration;
+    }
+
+    public class MyFilter implements Filter {
+        @Override
+        public void destroy() {
+        }
+
+        @Override
+        public void doFilter(ServletRequest srequest, ServletResponse sresponse, FilterChain filterChain)
+                throws IOException, ServletException {
+
+            HttpServletRequest request = (HttpServletRequest) srequest;
+            //System.out.println("this is MyFilter,url :"+request.getRequestURI());
+            //System.out.println("此处可认证超级VVVVVVIP权限.....");
+            //System.out.println("此处可过滤一万种攻击");
+            filterChain.doFilter(srequest, sresponse);
+        }
+
+        @Override
+        public void init(FilterConfig arg0) throws ServletException {
+        }
+    }
+}
