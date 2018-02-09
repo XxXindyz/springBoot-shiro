@@ -50,8 +50,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     @Transactional(value = "test1TransactionManager")
-    public void signUp(String username, String simpleHash, String salt) throws Exception {
-
-        userInfoMapper.addUserInfo(username,simpleHash,salt);
+    public void signUp(String username, String password) throws Exception {
+        UUID uuid = UUID.randomUUID();
+        String salt = uuid.toString().replace("-","");
+        SimpleHash simpleHash = new SimpleHash("MD5",password,username + salt,2);
+        userInfoMapper.addUserInfo(username,simpleHash.toString(),salt);
     }
 }

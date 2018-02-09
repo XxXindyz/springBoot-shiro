@@ -14,5 +14,5 @@ public interface UserInfoService {
     /**通过username查找用户信息;*/
     public UserInfo findByUsername(String username);
 
-    void signUp(String username, String simpleHash, String salt) throws Exception;
+    void signUp(String username, String password) throws Exception;
 }

@@ -68,11 +68,9 @@ public class HelloController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) return "error signup param";
-        UUID uuid = UUID.randomUUID();
-        String salt = uuid.toString().replace("-","");
-        SimpleHash simpleHash = new SimpleHash("MD5",password,username + salt,2);
+
         try {
-            userInfoService.signUp(username,simpleHash.toString(),salt);
+            userInfoService.signUp(username,password);
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
